@@ -1,0 +1,65 @@
+###
+
+GET https://localhost:9059/v1/topics HTTP/1.1
+
+###
+
+GET https://localhost:9059/v1/subscriptions HTTP/1.1
+Content-Type: application/json
+
+###
+
+# @name subscribe
+POST https://localhost:9059/v1/subscription HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Trigger when orders happening",
+    "topics": [
+        "order.notification",
+        "order.accepted",
+        "order.denied",
+        "order.cancelled",
+        "order.ready"
+    ],
+    "notification_url": "https://{{$dotenv HOST}}/v1/pos/messaging/ingress",
+    "api_version": {
+        "value": "2022-11-23",
+        "add_to": "Header",
+        "add_as": "X-Version"
+    },
+    "api_access_token": {
+        "value": "{{$dotenv HOST_API_KEY}}",
+        "add_to": "Header",
+        "add_as": "X-Api-Key"
+    }
+}
+
+# {
+#     "metadata": {
+#         "resource_id": "ec54169f-943e-495f-8c4f-463c8a8635b2"
+#         "activation_code": "sig3be19a99-e962-43ce-80da-b4c752b9f5e2",
+#         "status": "Disabled",
+#     },
+#     "resource_href": [
+#         "activate: "https://localhost:9059/subscription/id/ec54169f-943e-495f-8c4f-463c8a8635b2/activate"
+#     ]
+# }
+
+###
+
+GET {{subscribe.response.headers.Location}} HTTP/1.1 HTTP/1.1
+Content-Type: application/json
+
+###
+
+PATCH {{subscribe.response.headers.Location}}/activate HTTP/1.1
+Content-Type: application/json
+
+{
+    "activation_code": "whv3c025747-463e-40f0-89d2-fd1400fc795c"
+}
+
+###
+
+DELETE {{subscribe.response.headers.Location}} HTTP/1.1

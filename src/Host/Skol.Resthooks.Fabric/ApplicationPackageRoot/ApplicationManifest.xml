@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="Skol.Resthooks.FabricType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="Skol.Messaging.Egress_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="Skol.Messaging.Egress_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
+    <Parameter Name="Skol.Messaging.Ingress_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="Skol.Messaging.Ingress_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
+    <Parameter Name="Skol.Resthooks.Subs_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="Skol.Resthooks.Subs_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
+  </Parameters>
+  <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
+       should match the Name and Version attributes of the ServiceManifest element defined in the 
+       ServiceManifest.xml file. -->
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="Skol.Messaging.EgressPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="code">
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[Skol.Messaging.Egress_ASPNETCORE_ENVIRONMENT]" />
+    </EnvironmentOverrides>
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="Skol.Messaging.IngressPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="code">
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[Skol.Messaging.Ingress_ASPNETCORE_ENVIRONMENT]" />
+    </EnvironmentOverrides>
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="Skol.Resthooks.SubsPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="code">
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[Skol.Resthooks.Subs_ASPNETCORE_ENVIRONMENT]" />
+    </EnvironmentOverrides>
+  </ServiceManifestImport>
+  <DefaultServices>
+    <!-- The section below creates instances of service types, when an instance of this 
+         application type is created. You can also create one or more instances of service type using the 
+         ServiceFabric PowerShell module.
+
+         The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
+    <Service Name="Skol.Messaging.Egress" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="Skol.Messaging.EgressType" InstanceCount="[Skol.Messaging.Egress_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="Skol.Messaging.Ingress" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="Skol.Messaging.IngressType" InstanceCount="[Skol.Messaging.Ingress_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="Skol.Resthooks.Subs" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="Skol.Resthooks.SubsType" InstanceCount="[Skol.Resthooks.Subs_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+  </DefaultServices>
+</ApplicationManifest>

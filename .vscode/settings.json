@@ -1,0 +1,14 @@
+{
+    "editor.formatOnPaste": true,
+    "editor.guides.bracketPairs": "active",
+    "debug.internalConsoleOptions": "neverOpen",
+    "scm.defaultViewMode": "tree",
+    "files.watcherExclude": {
+      "**/bin/**": true,
+      "**/obj/**": true
+    },
+    "files.associations": {
+      "**/ci/*.yml": "azure-pipelines"
+    },
+    "rest-client.previewOption": "exchange"
+}

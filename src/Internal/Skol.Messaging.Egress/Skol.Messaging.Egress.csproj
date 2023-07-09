@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
+    <ServerGarbageCollection>True</ServerGarbageCollection>
+    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.16" />
+    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" Version="6.1.1653" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Skol.Messaging.Contracts\Skol.Messaging.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>
