@@ -1,4 +1,4 @@
-# Tryout .NET & Azure Stuff
+# Tryout RESThooks on Microsoft Service Fabric
 
 [<img align="right" alt=".NET C-sharp" width="128rem" src="https://raw.githubusercontent.com/github/explore/93d8a67084f94b2a444e510199a6e7622e5b09a3/topics/dotnet/dotnet.png" />][dotnet-quick-start]
 
