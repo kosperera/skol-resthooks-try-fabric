@@ -18,13 +18,13 @@ namespace Skol.Resthooks.Subs.Domain.ValueTypes
         public string SigningKey { get; set; }
 
         public override bool Equals(object obj)
-            => Equals(obj as WebhookOptions);
+            => obj is WebhookOptions other && Equals(other);
 
         public bool Equals(WebhookOptions other)
             => other is { } && (NotificationUrl, Version, AccessToken, SigningKey) == (other.NotificationUrl, other.Version, other.AccessToken, other.SigningKey);
 
         public override int GetHashCode()
-            => HashCode.Combine(NotificationUrl, Version, AccessToken, SigningKey);
+            => (NotificationUrl, Version, AccessToken, SigningKey).GetHashCode();
 
         public static bool operator ==(WebhookOptions left, WebhookOptions right)
             => EqualityComparer<WebhookOptions>.Default.Equals(left, right);
