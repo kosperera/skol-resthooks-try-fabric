@@ -1,0 +1,32 @@
+services:
+  az-sql:
+    container_name: azure-sql
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    ports:
+      - 1433:1433
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: StrongPassw0rd
+      # MSSQL_PID: Developer 
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P StrongPassw0rd -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      retries: 3
+      start_period: 3s
+      timeout: 3s
+
+  broker:
+    container_name: rabbit-mq
+    image: rabbitmq:management
+    ports:
+      # AMQP
+      - 5672:5672
+      # Management
+      - 15672:15672
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      interval: 30s
+      timeout: 10s
+      retries: 2
