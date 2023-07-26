@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -11,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services
                 .AddOptions<JsonOptions>()
-                .Configure(opt => JsonObjectSerializer.Factory.GetOrAddDefaults(opt.JsonSerializerOptions)).Services
+                .Configure(opt => JsonObjectSerializer.Defaults.JsonWebScenario(opt.JsonSerializerOptions)).Services
 
                 .AddSingleton<JsonObjectSerializer>(ctor =>
                 {
