@@ -15,7 +15,7 @@ namespace Skol.Resthooks.Subs.Domain.ValueTypes
         public string AddAs { get; set; }
 
         public override bool Equals(object obj)
-            => obj is MetadataEntry other && Equals(other);
+            => ReferenceEquals(this, obj) || obj is MetadataEntry other && Equals(other);
 
         public bool Equals(MetadataEntry other)
             => other is { } && (Value, AddTo, AddAs) == (other.Value, other.AddTo, AddAs);

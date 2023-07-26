@@ -15,13 +15,13 @@ namespace Skol.Messaging.Ingress.Domain.ValueTypes
         public string AddAs { get; set; }
 
         public override bool Equals(object obj)
-            => Equals(obj as MetadataEntry);
+            => ReferenceEquals(this, obj) || obj is MetadataEntry other && Equals(other);
 
         public bool Equals(MetadataEntry other)
             => other is { } && (Value, AddTo, AddAs) == (other.Value, other.AddTo, AddAs);
 
         public override int GetHashCode()
-            => HashCode.Combine(Value, AddTo, AddAs);
+            => (Value, AddTo, AddAs).GetHashCode();
 
         public static bool operator ==(MetadataEntry left, MetadataEntry right)
             => EqualityComparer<MetadataEntry>.Default.Equals(left, right);
