@@ -1,6 +1,6 @@
 namespace Microsoft.EntityFrameworkCore
 {
-    internal static class ModelBuilderApplyConfigurationsExtension
+    public static class ModelBuilderApplyConfigurationsExtension
     {
         public static ModelBuilder ApplyConfigurations(this ModelBuilder modelBuilder, params EntityTypeConfiguration[] configurations)
         {
