@@ -20,6 +20,7 @@
     </EntryPoint>
     <EnvironmentVariables>
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value=""/>
+      <EnvironmentVariable Name="SKOL_INGRESS_ENDPOINT_URL" Value=""/>
     </EnvironmentVariables>
   </CodePackage>
 
