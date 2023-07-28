@@ -10,12 +10,18 @@ namespace Skol.Messaging.Egress
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
+
+        public Startup(IWebHostEnvironment env)
+        {
+            Configuration = new ConfigurationBuilder().SetBasePath(env.ContentRootPath)
+                                                      .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                                                      .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                                                      .AddFabricConfiguration("Config")
+                                                      .AddEnvironmentVariables()
+
+                                                      .Build();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)

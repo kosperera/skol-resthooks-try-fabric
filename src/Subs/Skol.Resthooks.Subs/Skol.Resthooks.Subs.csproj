@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Microsoft.Extensions.EntityFrameworkCore\Microsoft.Extensions.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\Libraries\Microsoft.Extensions.Json\Microsoft.Extensions.Json.csproj" />
+    <ProjectReference Include="..\..\Libraries\Microsoft.Extensions.ServiceFabric\Microsoft.Extensions.ServiceFabric.csproj" />
   </ItemGroup>
 
 

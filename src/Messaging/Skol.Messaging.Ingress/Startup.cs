@@ -15,7 +15,7 @@ namespace Skol.Messaging.Ingress
             Configuration = new ConfigurationBuilder().SetBasePath(env.ContentRootPath)
                                                       .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                                                       .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                                                      //.AddServiceFabricConfig("Code")
+                                                      .AddFabricConfiguration("Config")
                                                       .AddEnvironmentVariables()
 
                                                       .Build();
