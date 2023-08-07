@@ -6,6 +6,7 @@
     <Parameter Name="Skol.Subs.InstanceCount" DefaultValue="-1" />
     <Parameter Name="Skol.Subs.IngressEndpointUrl" DefaultValue="" />
     <Parameter Name="Skol.ASPNETCORE_ENVIRONMENT" DefaultValue="" />
+    <Parameter Name="Skol.ConnectionStrings.IntentsDb" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -13,15 +14,13 @@
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="Skol.Messaging.EgressPkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides />
-    <EnvironmentOverrides CodePackageRef="code">
-      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[Skol.ASPNETCORE_ENVIRONMENT]" />
-    </EnvironmentOverrides>
   </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="Skol.Messaging.IngressPkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides />
     <EnvironmentOverrides CodePackageRef="code">
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[Skol.ASPNETCORE_ENVIRONMENT]" />
+      <EnvironmentVariable Name="SKOL_CONNECTION_STRINGS_INTENTSDB" Value="[Skol.ConnectionStrings.IntentsDb]" />
     </EnvironmentOverrides>
   </ServiceManifestImport>
   <ServiceManifestImport>
@@ -30,6 +29,7 @@
     <EnvironmentOverrides CodePackageRef="code">
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[Skol.ASPNETCORE_ENVIRONMENT]" />
       <EnvironmentVariable Name="SKOL_INGRESS_ENDPOINT_URL" Value="[Skol.Subs.IngressEndpointUrl]" />
+      <EnvironmentVariable Name="SKOL_CONNECTION_STRINGS_INTENTSDB" Value="[Skol.ConnectionStrings.IntentsDb]" />
     </EnvironmentOverrides>
   </ServiceManifestImport>
   <DefaultServices>

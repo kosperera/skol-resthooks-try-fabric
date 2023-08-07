@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Application xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="fabric:/Skol.Resthooks.Fabric" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
     <Parameter Name="Skol.Egress.InstanceCount" Value="1" />
@@ -6,5 +6,6 @@
     <Parameter Name="Skol.Subs.InstanceCount" Value="1" />
     <Parameter Name="Skol.Subs.IngressEndpointUrl" Value="https://localhost:8172" />
     <Parameter Name="Skol.ASPNETCORE_ENVIRONMENT" Value="Development" />
+    <Parameter Name="Skol.ConnectionStrings.IntentsDb" Value="Server=localhost;Database=Rh_IntentsDb;User Id=sa;Password=StrongPassw0rd;MultipleActiveResultSets=true;TrustServerCertificate=true" />
   </Parameters>
 </Application>
