@@ -1,0 +1,19 @@
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="MassTransit.RabbitMQ" Version="8.0.16" />
+    <PackageVersion Include="MediatR" Version="12.1.1" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageVersion Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" Version="6.1.1833" />
+    <PackageVersion Include="Microsoft.ServiceFabric.Data" Version="6.1.1833" />
+    <PackageVersion Include="Microsoft.ServiceFabric.Services" Version="6.1.1833" />
+  </ItemGroup>
+
+</Project>
