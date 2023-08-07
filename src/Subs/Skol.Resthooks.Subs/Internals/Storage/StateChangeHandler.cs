@@ -4,32 +4,31 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using Skol.Resthooks.Subs.Domain.ChangeTracking;
 
-namespace Skol.Resthooks.Subs.Internals.Storage
+namespace Skol.Resthooks.Subs.Internals.Storage;
+
+internal sealed partial class StateChangeHandler
 {
-    internal sealed partial class StateChangeHandler
+    static Type NotificationShape = typeof(StateChangeNotification<>);
+
+    readonly IPublisher _publisher;
+    readonly ILogger _logger;
+
+    public StateChangeHandler(IPublisher publisher, ILogger<StateChangeHandler> logger)
     {
-        static Type NotificationShape = typeof(StateChangeNotification<>);
+        _publisher = publisher;
+        _logger = logger;
+    }
 
-        readonly IPublisher _publisher;
-        readonly ILogger _logger;
-
-        public StateChangeHandler(IPublisher publisher, ILogger<StateChangeHandler> logger)
+    public async ValueTask BroadcastAsync(StateChangeEntry[] entries)
+    {
+        foreach (StateChangeEntry entry in entries)
         {
-            _publisher = publisher;
-            _logger = logger;
+            await _publisher.Publish(CreateNotification(entry));
         }
 
-        public async ValueTask BroadcastAsync(StateChangeEntry[] entries)
-        {
-            foreach (StateChangeEntry entry in entries)
-            {
-                await _publisher.Publish(CreateNotification(entry));
-            }
-
-            INotification CreateNotification(StateChangeEntry entry)
-                => (INotification)Activator.CreateInstance(
-                    NotificationShape.MakeGenericType(entry.GetType()),
-                    entry);
-        }
+        INotification CreateNotification(StateChangeEntry entry)
+            => (INotification)Activator.CreateInstance(
+                NotificationShape.MakeGenericType(entry.GetType()),
+                entry);
     }
 }

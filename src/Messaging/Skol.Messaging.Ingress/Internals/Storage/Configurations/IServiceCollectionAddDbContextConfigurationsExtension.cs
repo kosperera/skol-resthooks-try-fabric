@@ -1,19 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Skol.Messaging.Ingress.Internals.Storage.Configurations;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
+
+public static class IServiceCollectionAddDbContextConfigurationsExtension
 {
-    public static class IServiceCollectionAddDbContextConfigurationsExtension
+    public static IServiceCollection AddDbContextConfigurations(this IServiceCollection services)
     {
-        public static IServiceCollection AddDbContextConfigurations(this IServiceCollection services)
-        {
-            services
-                .AddSingleton<EntityTypeConfiguration, SubscriptionMappingConfiguration>()
+        services
+            .AddSingleton<EntityTypeConfiguration, SubscriptionMappingConfiguration>()
+            .AddSingleton<EntityTypeConfiguration, TopicMappingConfiguration>();
 
-                .AddSingleton<EntityTypeConfiguration, DefaultSubscriptionsQueryFilter>()
-                .AddSingleton<EntityTypeConfiguration, DefaultTopicsQueryFilter>();
-
-            return services;
-        }
+        return services;
     }
 }

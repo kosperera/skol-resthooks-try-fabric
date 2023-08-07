@@ -1,23 +1,15 @@
-using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Skol.Resthooks.Subs.Domain.ChangeTracking;
+using static Skol.Resthooks.Subs.Domain.Events.SubscriptionCreated;
 
-namespace Skol.Resthooks.Subs.Domain.Events
+namespace Skol.Resthooks.Subs.Domain.Events;
+
+public sealed record SubscriptionCreated(
+    MessageMetadata Metadata,
+    [property: JsonPropertyName("resource_href")] IDictionary<string, string> ResourceHref)
+    : StateChangeEntry
 {
-    public sealed class SubscriptionCreated : StateChangeEntry
-    {
-        public MessageMetadata Metadata { get; set; }
-
-        [property: JsonPropertyName("resource_href")]
-        public IDictionary<string, string> ResourceHref { get; set; }
-
-        public sealed class MessageMetadata
-        {
-            public IDictionary<string, string> Headers { get; set; }
-
-            [property: JsonPropertyName("resource_id")]
-            public Guid ResourceId { get; set; }
-        }
-    }
-}
+    public sealed record MessageMetadata(
+        IDictionary<string, string> Headers,
+        [property: JsonPropertyName("resource_id")] Guid ResourceId);
+};

@@ -1,9 +1,6 @@
-using System.Collections.Generic;
+namespace Skol.Resthooks.Subs.Domain.ChangeTracking;
 
-namespace Skol.Resthooks.Subs.Domain.ChangeTracking
+public interface IStateChangeEnumerator
 {
-    public interface IStateChangeEnumerator
-    {
-        IList<StateChangeEntry> StateChanges { get; }
-    }
+    IList<StateChangeEntry> StateChanges { get; }
 }

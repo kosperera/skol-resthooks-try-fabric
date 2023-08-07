@@ -1,12 +1,6 @@
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
-using System;
+namespace Skol.Resthooks.Subs.Internals.Http;
 
-namespace Skol.Resthooks.Subs.Internals.Http
+public interface IPublishingEndpoint
 {
-    public interface IPublishingEndpoint
-    {
-        ValueTask PublishAsync<TContent>(TContent content, Action<HttpRequestMessage> configure, CancellationToken cancellationToken = default);
-    }
+    ValueTask PublishAsync<TContent>(TContent content, Action<HttpRequestMessage> configure, CancellationToken cancellationToken = default);
 }

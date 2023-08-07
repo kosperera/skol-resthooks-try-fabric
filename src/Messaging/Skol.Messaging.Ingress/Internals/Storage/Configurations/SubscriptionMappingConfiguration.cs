@@ -1,36 +1,33 @@
-using System.Collections.Generic;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Skol.Messaging.Ingress.Domain.Models;
 using Skol.Messaging.Ingress.Domain.ValueTypes;
 
-namespace Skol.Messaging.Ingress.Internals.Storage.Configurations
+namespace Skol.Messaging.Ingress.Internals.Storage.Configurations;
+
+internal sealed class SubscriptionMappingConfiguration : EntityTypeConfiguration<Subscription>
 {
-    internal sealed class SubscriptionMappingConfiguration : EntityTypeConfiguration<Subscription>
+    readonly JsonObjectSerializer _serializer;
+
+    public SubscriptionMappingConfiguration(JsonObjectSerializer serializer)
     {
-        readonly JsonObjectSerializer _serializer;
+        _serializer = serializer;
+    }
 
-        public SubscriptionMappingConfiguration(JsonObjectSerializer serializer)
-        {
-            _serializer = serializer;
-        }
+    public override void Configure(EntityTypeBuilder<Subscription> builder)
+    {
+        builder.Property(s => s.Topics).Metadata
+                                       .SetValueConverter(new ValueConverter<ICollection<string>, string>(
+                                           convertToProviderExpression: (topics) => _serializer.Serialize(topics, default),
+                                           convertFromProviderExpression: (json) => _serializer.Deserialize<ICollection<string>>(json, default)));
 
-        public override void Configure(EntityTypeBuilder<Subscription> builder)
-        {
-            builder.Property(s => s.Topics).HasConversion(
-                                               convertToProviderExpression: (topics) => GetJson(topics),
-                                               convertFromProviderExpression: (json) => GetObject<ICollection<string>>(json));
+        builder.Property(s => s.Webhook).Metadata
+                                        .SetValueConverter(new ValueConverter<WebhookOptions, string>(
+                                            convertToProviderExpression: (webhook) => _serializer.Serialize(webhook, default),
+                                            convertFromProviderExpression: (json) => _serializer.Deserialize<WebhookOptions>(json, default)));
 
-            builder.Property(s => s.Webhook).HasConversion(
-                                                convertToProviderExpression: (webhook) => GetJson(webhook),
-                                                convertFromProviderExpression: (json) => GetObject<WebhookOptions>(json));
-        }
-
-        string GetJson(object value)
-            => _serializer.Serialize(value);
-
-        T GetObject<T>(string json)
-            => _serializer.Deserialize<T>(json);
+        builder.HasQueryFilter(s => !s.Archived);
     }
 }

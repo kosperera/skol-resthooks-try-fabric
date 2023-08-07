@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
+namespace Skol.Messaging.Contracts;
 
-namespace Skol.Messaging.Contracts
+public interface MessageIngested
 {
-    public interface MessageIngested
-    {
-        IDictionary<string, string> Headers { get; set; }
-        string EventKind { get; set; }
-        string Environment { get; set; }
-        DateTimeOffset OccurredAsOf { get; set; }
-        object Content { get; set; }
-    }
+    IDictionary<string, string> Headers { get; set; }
+    string EventKind { get; set; }
+    string Environment { get; set; }
+    DateTimeOffset OccurredAsOf { get; set; }
+    object Content { get; set; }
 }

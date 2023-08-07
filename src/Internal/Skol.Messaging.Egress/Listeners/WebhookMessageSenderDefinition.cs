@@ -1,12 +1,11 @@
 using MassTransit;
 
-namespace Skol.Messaging.Egress.Listeners
+namespace Skol.Messaging.Egress.Listeners;
+
+public sealed class WebhookMessageSenderDefinition : ConsumerDefinition<WebhookMessageSender>
 {
-    public sealed class WebhookMessageSenderDefinition : ConsumerDefinition<WebhookMessageSender>
+    public WebhookMessageSenderDefinition()
     {
-        public WebhookMessageSenderDefinition()
-        {
-            Endpoint(cfg => { cfg.Name = "egress-webhooks"; });
-        }
+        Endpoint(cfg => { cfg.Name = "egress-webhooks"; });
     }
 }

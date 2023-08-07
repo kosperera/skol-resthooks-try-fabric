@@ -1,13 +1,12 @@
 using MassTransit;
 using Skol.Messaging.Ingress.Listeners;
 
-namespace Skol.Messaging.Ingress.Internals.Listeners
+namespace Skol.Messaging.Ingress.Internals.Listeners;
+
+public sealed class MessageReceiverDefinition : ConsumerDefinition<MessageReceiver>
 {
-    public sealed class MessageReceiverDefinition : ConsumerDefinition<MessageReceiver>
+    public MessageReceiverDefinition()
     {
-        public MessageReceiverDefinition()
-        {
-            Endpoint(cfg => { cfg.Name = "digest-ingress"; });
-        }
+        Endpoint(cfg => { cfg.Name = "digest-ingress"; });
     }
 }

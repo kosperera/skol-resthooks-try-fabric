@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Microsoft.EntityFrameworkCore
+namespace Microsoft.EntityFrameworkCore;
+
+public abstract class EntityTypeConfiguration<TEntity> : EntityTypeConfiguration, IEntityTypeConfiguration<TEntity> where TEntity : class
 {
-    public abstract class EntityTypeConfiguration<TEntity> : EntityTypeConfiguration, IEntityTypeConfiguration<TEntity> where TEntity : class
-    {
-        public abstract void Configure(EntityTypeBuilder<TEntity> builder);
-        public override void Configure(ModelBuilder modelBuilder)
-            => Configure(modelBuilder.Entity<TEntity>());
-    }
+    public abstract void Configure(EntityTypeBuilder<TEntity> builder);
+
+    public override void Configure(ModelBuilder modelBuilder)
+        => Configure(modelBuilder.Entity<TEntity>());
 }

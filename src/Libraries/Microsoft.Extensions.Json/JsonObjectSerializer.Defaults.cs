@@ -1,28 +1,29 @@
-namespace System.Text.Json
+using System.Text.Json.Serialization;
+
+namespace System.Text.Json;
+
+public sealed partial class JsonObjectSerializer
 {
-    public sealed partial class JsonObjectSerializer
+    internal static class Defaults
     {
-        internal static class Defaults
+        public static JsonSerializerOptions JsonWebScenario(JsonSerializerOptions? options = default)
         {
-            public static JsonSerializerOptions JsonWebScenario(JsonSerializerOptions options = default)
-            {
-                options = options is null ? new JsonSerializerOptions() : options;
+            options ??= new JsonSerializerOptions();
 
-                //options.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                options.IgnoreNullValues = true;
+            options.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            //options.IgnoreNullValues = true;
 
-                options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-                options.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
-                
-                options.PropertyNameCaseInsensitive = true;
-                //options.NumberHandling = JsonNumberHandling.AllowReadingFromString;
+            options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            options.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+            
+            options.PropertyNameCaseInsensitive = true;
+            options.NumberHandling = JsonNumberHandling.AllowReadingFromString;
 
-                options.AllowTrailingCommas = true;
-                //options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                options.WriteIndented = true;
+            options.AllowTrailingCommas = true;
+            options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            options.WriteIndented = true;
 
-                return options;
-            }
+            return options;
         }
     }
 }

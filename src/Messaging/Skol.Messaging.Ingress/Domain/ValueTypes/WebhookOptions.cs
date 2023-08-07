@@ -2,34 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Skol.Messaging.Ingress.Domain.ValueTypes
-{
-    public sealed class WebhookOptions : IEquatable<WebhookOptions>
-    {
-        [property: JsonPropertyName("notification_url")]
-        public string NotificationUrl { get; set; }
+namespace Skol.Messaging.Ingress.Domain.ValueTypes;
 
-        public MetadataEntry Version { get; set; }
+public sealed record WebhookOptions(
+    [property: JsonPropertyName("notification_url")] string NotificationUrl,
+    MetadataEntry Version,
+    [property: JsonPropertyName("access_token")] MetadataEntry AccessToken,
+    [property: JsonPropertyName("signing_key")] string SigningKey);
 
-        [property: JsonPropertyName("access_token")]
-        public MetadataEntry AccessToken { get; set; }
-
-        [property: JsonPropertyName("signing_key")]
-        public string SigningKey { get; set; }
-
-        public override bool Equals(object obj)
-            => ReferenceEquals(this, obj) || obj is WebhookOptions other && Equals(other);
-
-        public bool Equals(WebhookOptions other)
-            => other is { } && (NotificationUrl, Version, AccessToken, SigningKey) == (other.NotificationUrl, other.Version, other.AccessToken, other.SigningKey);
-
-        public override int GetHashCode()
-            => (NotificationUrl, Version, AccessToken, SigningKey).GetHashCode();
-
-        public static bool operator ==(WebhookOptions left, WebhookOptions right)
-            => EqualityComparer<WebhookOptions>.Default.Equals(left, right);
-
-        public static bool operator !=(WebhookOptions left, WebhookOptions right)
-            => !(left == right);
-    }
-}

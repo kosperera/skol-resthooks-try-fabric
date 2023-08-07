@@ -1,12 +1,6 @@
 using MediatR;
 
-namespace Skol.Resthooks.Subs.Domain.ChangeTracking
-{
-    public sealed class StateChangeNotification<TEntry> : INotification where TEntry : notnull, StateChangeEntry
-    {
-        public TEntry StateChangeEntry { get; }
+namespace Skol.Resthooks.Subs.Domain.ChangeTracking;
 
-        public StateChangeNotification(TEntry e)
-            => StateChangeEntry = e;
-    }
-}
+public sealed record StateChangeNotification<TEntry>(TEntry StateChangeEntry) : INotification
+    where TEntry : notnull, StateChangeEntry;
