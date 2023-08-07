@@ -2,29 +2,36 @@
 <Project>
   <!-- See https://aka.ms/dotnet/msbuild/customize for more details on customizing your build -->
   <PropertyGroup Label="Sdk">
-	  <DefaultNetCoreTargetFramework>netcoreapp3.1</DefaultNetCoreTargetFramework>
+	  <DefaultNetCoreTargetFramework>net7.0</DefaultNetCoreTargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
 	  <IsPackable>false</IsPackable>
 	  <IsTestProject>$(MSBuildProjectName.EndsWith('.Tests'))</IsTestProject>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <DefinteConstants>DEBUG;TRACE</DefinteConstants>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DefinteConstants>DEBUG;TRACE;$(DefinteConstants)</DefinteConstants>
   </PropertyGroup>
 
-  <ItemGroup Label="Add Internals Visibility" Condition="'$(IsTestProject)' != 'true'">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DefinteConstants>TRACE;$(DefinteConstants)</DefinteConstants>
+  </PropertyGroup>
+
+  <ItemGroup Label="Add Internals Visibility" Condition=" '$(IsTestProject)' != 'true' ">
     <InternalsVisibleTo Include="$(MSBuildProjectName).Tests" />
   </ItemGroup>
 
-  <PropertyGroup Label="Code Coverage" Condition="'$(IsTestProject)' == 'true'">
+  <PropertyGroup Label="Code Coverage" Condition=" '$(IsTestProject)' == 'true' ">
+    <Nullable>disable</Nullable>
     <RunSettingsFilePath>$(SolutionDir)\.runsettings</RunSettingsFilePath>
   </PropertyGroup>
 
   <PropertyGroup Label="General Info">
-	<Authors>Kosala Nuwan Perera</Authors>
-	<Company>Alertbox Inc.</Company>
-	<Copyright>Copyright (c) $([System.DateTime]::Now.ToString('yyyy')) $(Company)</Copyright>
-	<RepositoryUrl>https://github.com/kosalanuwan/skol-resthooks-try-fabric</RepositoryUrl>
-	<RepositoryType>git</RepositoryType>
+    <Authors>Kosala Nuwan Perera</Authors>
+    <Company>Alertbox Inc.</Company>
+    <Copyright>Copyright (c) $([System.DateTime]::Now.ToString('yyyy')) $(Company)</Copyright>
+    <RepositoryUrl>https://github.com/kosalanuwan/skol-resthooks-try-fabric</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
 </Project>
