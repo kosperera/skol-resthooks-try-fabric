@@ -23,22 +23,22 @@ internal sealed class Egress : StatelessService
     /// <param name="cancellationToken">Canceled when Service Fabric needs to shut down this service instance.</param>
     protected override async Task RunAsync(CancellationToken cancellationToken)
     {
-        var builder = Host.CreateApplicationBuilder();
+        await Host.CreateDefaultBuilder()
 
-        // Add services to the container.
+                  .ConfigureAppConfiguration(cfg =>
+                  {
+                      cfg.AddFabricConfiguration("Config");
+                  })
 
-        builder.Configuration.AddFabricConfiguration("Config");
+                  // Add services to the container.
+                  .ConfigureServices(services =>
+                  {
+                      services.AddJsonOptions()
+                              .AddWebhookProxy()
+                              .AddMessageBroker();
+                  })
 
-        builder.Logging.ClearProviders()
-                       .AddConsole()
-                       .AddDebug();
-
-        builder.Services.AddJsonOptions()
-                        .AddWebhookProxy()
-                        .AddMessageBroker();
-
-        var app = builder.Build();
-
-        await app.RunAsync(cancellationToken);
+                  .Build()
+                  .RunAsync(cancellationToken);
     }
 }
