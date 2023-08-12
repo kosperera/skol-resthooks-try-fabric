@@ -13,6 +13,7 @@ using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using Microsoft.ServiceFabric.Data;
+using Microsoft.ServiceFabric.AspNetCore.Configuration;
 
 namespace Skol.Messaging.Ingress;
 
@@ -43,14 +44,19 @@ internal sealed class Ingress : StatelessService
                     builder.WebHost.UseKestrel(opt =>
                                    {
                                        int port = serviceContext.CodePackageActivationContext.GetEndpoint("ServiceEndpoint").Port;
-                                       opt.Listen(IPAddress.IPv6Any, port, listenOptions => listenOptions.UseHttps(GetCertificateFromStore()));
+                                       opt.Listen(IPAddress.IPv6Any, port, listenOptions => listenOptions.UseHttps(https =>
+                                       {
+                                           https.ServerCertificate = GetCertificateFromStore();
+                                           // HINT: Allow the machine to decide.
+                                           //https.SslProtocols = SslProtocols.Tls12;
+                                       }));
                                    })
                                    .UseContentRoot(Directory.GetCurrentDirectory())
                                    .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)
                                    .UseUrls(url);
                     
                     // Add services to the container.
-                    builder.Configuration.AddFabricConfiguration("Config");
+                    builder.Configuration.AddServiceFabricConfiguration();
 
                     builder.Logging.ClearProviders()
                                    .AddConsole()

@@ -10,13 +10,13 @@
   <ItemGroup>
     <PackageReference Include="MediatR" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Configuration" />
     <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Microsoft.Extensions.EntityFrameworkCore\Microsoft.Extensions.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\Libraries\Microsoft.Extensions.Json\Microsoft.Extensions.Json.csproj" />
-    <ProjectReference Include="..\..\Libraries\Microsoft.Extensions.ServiceFabric\Microsoft.Extensions.ServiceFabric.csproj" />
   </ItemGroup>
 
 </Project>

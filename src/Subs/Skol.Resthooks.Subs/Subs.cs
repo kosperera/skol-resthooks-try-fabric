@@ -1,18 +1,11 @@
-using System;
-using System.Collections.Generic;
 using System.Fabric;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.ServiceFabric.AspNetCore.Configuration;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
-using Microsoft.ServiceFabric.Data;
+using static System.Environment;
 
 namespace Skol.Resthooks.Subs;
 
@@ -44,14 +37,19 @@ internal sealed class Subs : StatelessService
                     builder.WebHost.UseKestrel(opt =>
                                    {
                                        int port = serviceContext.CodePackageActivationContext.GetEndpoint("ServiceEndpoint").Port;
-                                       opt.Listen(IPAddress.IPv6Any, port, listenOptions => listenOptions.UseHttps(GetCertificateFromStore()));
+                                       opt.Listen(IPAddress.IPv6Any, port, listenOptions => listenOptions.UseHttps(https =>
+                                       {
+                                           https.ServerCertificate = GetCertificateFromStore();
+                                           // HINT: Allow the machine to decide.
+                                           //https.SslProtocols = SslProtocols.Tls12;
+                                       }));
                                    })
                                    .UseContentRoot(Directory.GetCurrentDirectory())
                                    .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)
                                    .UseUrls(url);
                     
                     // Add services to the container.
-                    builder.Configuration.AddFabricConfiguration("Config");
+                    builder.Configuration.AddServiceFabricConfiguration();
 
                     builder.Logging.ClearProviders()
                                    .AddConsole()
@@ -78,7 +76,7 @@ internal sealed class Subs : StatelessService
     /// <returns>Returns the ASP .NET Core HTTPS development certificate</returns>
     private static X509Certificate2 GetCertificateFromStore()
     {
-        string aspNetCoreEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        string aspNetCoreEnvironment = GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
         if (string.Equals(aspNetCoreEnvironment, "Development", StringComparison.OrdinalIgnoreCase))
         {
             const string aspNetHttpsOid = "1.3.6.1.4.1.311.84.1.1";

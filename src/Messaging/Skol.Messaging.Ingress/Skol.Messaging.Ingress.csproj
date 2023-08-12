@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="MassTransit.RabbitMQ" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Configuration" />
     <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" />
   </ItemGroup>
 
@@ -17,7 +18,6 @@
     <ProjectReference Include="..\..\Internal\Skol.Messaging.Contracts\Skol.Messaging.Contracts.csproj" />
     <ProjectReference Include="..\..\Libraries\Microsoft.Extensions.EntityFrameworkCore\Microsoft.Extensions.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\Libraries\Microsoft.Extensions.Json\Microsoft.Extensions.Json.csproj" />
-    <ProjectReference Include="..\..\Libraries\Microsoft.Extensions.ServiceFabric\Microsoft.Extensions.ServiceFabric.csproj" />
   </ItemGroup>
 
 </Project>
