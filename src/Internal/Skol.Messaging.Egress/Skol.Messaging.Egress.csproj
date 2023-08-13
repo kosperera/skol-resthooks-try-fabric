@@ -11,12 +11,13 @@
   <ItemGroup>
     <PackageReference Include="MassTransit.RabbitMQ" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Configuration" />
     <PackageReference Include="Microsoft.ServiceFabric.Services" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Microsoft.Extensions.Json\Microsoft.Extensions.Json.csproj" />
-    <ProjectReference Include="..\..\Libraries\Microsoft.Extensions.ServiceFabric\Microsoft.Extensions.ServiceFabric.csproj" />
     <ProjectReference Include="..\Skol.Messaging.Contracts\Skol.Messaging.Contracts.csproj" />
   </ItemGroup>
 
