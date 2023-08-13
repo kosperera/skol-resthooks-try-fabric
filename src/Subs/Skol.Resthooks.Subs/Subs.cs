@@ -54,8 +54,9 @@ internal sealed class Subs : StatelessService
                     builder.Logging.ClearProviders()
                                    .AddConsole()
                                    .AddDebug();
-
-                    builder.Services.AddJsonOptions()
+                    
+                    builder.Services.AddLogging<Subs>()
+                                    .AddJsonOptions()
                                     .AddMessagingProxy()
                                     .AddIntentsDb();
 

@@ -53,7 +53,8 @@ internal sealed class Ingress : StatelessService
                                    .AddConsole()
                                    .AddDebug();
 
-                    builder.Services.AddJsonOptions()
+                    builder.Services.AddLogging<Ingress>()
+                                    .AddJsonOptions()
                                     .AddIntentsDb()
                                     .AddMessageBroker();
 
