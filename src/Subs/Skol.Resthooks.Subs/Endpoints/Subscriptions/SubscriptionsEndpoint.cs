@@ -16,8 +16,11 @@ internal static class SubscriptionsEndpoint
         return routes;
     }
 
-    static async Task<Results<Ok<Subscription[]>, NotFound>> ExecuteAsync(IIntentsDb db, CancellationToken cancellationToken)
+    static async Task<Results<Ok<Subscription[]>, NotFound>> ExecuteAsync(IIntentsDb db, ILogger logger, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(db);
+        ArgumentNullException.ThrowIfNull(logger);
+
         Subscription[] result = await db.Subscriptions.WithEnvironment(GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
                                                       .ToArrayAsync(cancellationToken);
 

@@ -19,19 +19,19 @@ internal static class PublishEndpoint
         return routes;
     }
 
-    static async Task<Results<Accepted, BadRequest>> ExecuteAsync(
+    static async Task<IResult> ExecuteAsync(
         [FromBody] object payload,
         HttpRequest request,
         IPublishEndpoint publisher,
-        CancellationToken cancellationToken)
+        ILogger logger,
+        CancellationToken cancellationToken = default)
     {
-        //object? payload = await request.ReadFromJsonAsync(typeof(object), cancellationToken);
-        if (payload is null) { return TypedResults.BadRequest(); }
+        ArgumentNullException.ThrowIfNull(payload);
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(publisher);
+        ArgumentNullException.ThrowIfNull(logger);
 
         request.Headers.TryGetValue(KnownHeaderNames.RequestId, out var requestId);
-        Trace.Assert(
-            condition: payload is { },
-            message: $"[Resthooks] Ingress notification ingress attempt failed. (RequestId={requestId})");
 
         await publisher.Publish<MessageIngested>(new
         {

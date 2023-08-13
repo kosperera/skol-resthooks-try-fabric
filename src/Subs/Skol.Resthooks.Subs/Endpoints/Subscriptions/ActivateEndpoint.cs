@@ -16,13 +16,17 @@ internal static class ActivateEndpoint
 
         return routes;
     }
-    static async Task<Results<NoContent, BadRequest, NotFound<object>, UnprocessableEntity<object>>> ExecuteAsync(
+
+    static async Task<Results<NoContent, NotFound<object>, UnprocessableEntity<object>>> ExecuteAsync(
         [FromRoute] Guid id,
         [FromBody] ActivateSubscription content,
         IIntentsDb db,
-        CancellationToken cancellationToken)
+        ILogger logger,
+        CancellationToken cancellationToken = default)
     {
-        if (content is null) { return TypedResults.BadRequest(); }
+        ArgumentNullException.ThrowIfNull(content);
+        ArgumentNullException.ThrowIfNull(db);
+        ArgumentNullException.ThrowIfNull(logger);
 
         Subscription? entity = await db.Subscriptions.Disabled()
                                                      .WithId(id)
@@ -31,8 +35,14 @@ internal static class ActivateEndpoint
 
         var routeValues = new { id };
 
-        if (entity is null) { return TypedResults.NotFound<object>(routeValues); }
-        else if (entity.ActivationCode != content.Code) { return TypedResults.UnprocessableEntity<object>(routeValues); }
+        if (entity is null)
+        {
+            return TypedResults.NotFound<object>(routeValues);
+        }
+        else if (entity.ActivationCode != content.Code)
+        {
+            return TypedResults.UnprocessableEntity<object>(routeValues);
+        }
 
         entity.Enabled = true;
 

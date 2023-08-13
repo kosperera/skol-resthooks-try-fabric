@@ -15,12 +15,23 @@ internal static class TopicsEndpoint
         return routes;
     }
 
-    static async Task<Results<Ok<Topic[]>, NotFound>> ExecuteAsync(IIntentsDb db, CancellationToken cancellationToken)
+    static async Task<Results<Ok<Topic[]>, NotFound>> ExecuteAsync(IIntentsDb db, ILogger logger, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(db);
+        ArgumentNullException.ThrowIfNull(logger);
+
         Topic[] result = await db.Topics.ToArrayAsync(cancellationToken);
+
+        Log.TopicsFound(logger, result.Length);
 
         return result is null
             ? TypedResults.NotFound()
             : TypedResults.Ok<Topic[]>(result);
+    }
+
+    private static class Log
+    {
+        public static void TopicsFound(ILogger logger, int count)
+            => logger.LogInformation("[Resthooks] Topics {Count} found.", count);
     }
 }

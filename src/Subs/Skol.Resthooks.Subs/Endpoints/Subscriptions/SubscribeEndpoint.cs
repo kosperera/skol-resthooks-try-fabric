@@ -1,8 +1,10 @@
 using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 using Skol.Resthooks.Subs.Domain;
@@ -28,15 +30,22 @@ internal static class SubscribeEndpoint
             [FromBody] CreateWebhookSubscription payload,
             HttpContext context,
             IIntentsDb db,
-            CancellationToken cancellationToken)
+            ILogger logger,
+            CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(payload);
+        ArgumentNullException.ThrowIfNull(context);
+        ArgumentNullException.ThrowIfNull(db);
+        ArgumentNullException.ThrowIfNull(logger);
+
         HttpRequest request = context.Request;
 
         request.Headers.TryGetValue(HeaderNames.RequestId, out var requestId);
 
-        Trace.Assert(
-            condition: payload.Topics.Length > 0,
-            message: $"[Resthooks] Subscription attempt failed. (RequestId={requestId})");
+        Log.SubscriptionFailed(
+            logger,
+            condition: () => payload.Topics.Length > 0,
+            requestId!);
 
         if (payload.Topics.Length == 0) { return TypedResults.BadRequest(); }
 
@@ -45,9 +54,10 @@ internal static class SubscribeEndpoint
                                         .Where(t => t.IsSystemKind || payload.Topics.Contains(t.Name))
                                         .ToArrayAsync(cancellationToken);
 
-        Trace.Assert(
-            condition: topics is { } && payload.Topics.Length > 0,
-            message: $"[Resthooks] Subscription attempt failed. (RequestId={requestId})");
+        Log.SubscriptionFailed(
+            logger,
+            condition: () => topics is not null && payload.Topics.Length > 0,
+            requestId!);
 
         var routeValues = new { id = Guid.NewGuid() };
         Subscription entity = new Subscription
@@ -75,6 +85,8 @@ internal static class SubscribeEndpoint
         db.Subscriptions.Add(entity);
         await db.SaveChangesAsync(cancellationToken);
 
+        Log.SubscriptionSucceeded(logger, requestId!, routeValues);
+
         return TypedResults.Created(state.ResourceHref["get"]);
     }
 
@@ -101,6 +113,17 @@ internal static class SubscribeEndpoint
         // HINT: Resthooks decided how to pass these.
         HeaderNames.Date
     });
+
+    private static class Log
+    {
+        public static void SubscriptionFailed(ILogger logger, Func<bool> condition, string requestId)
+        {
+            if (!condition()) { logger.LogError("[Resthooks] Subscription attempt failed. (RequestId={RequestId})", requestId); }
+        }
+
+        public static void SubscriptionSucceeded(ILogger logger, string requestId, object routeValues)
+            => logger.LogInformation("[Resthooks] Subscription created. (RequestId={RequestId}, Route={RouteValues})", requestId, routeValues);
+    }
 
     sealed record CreateWebhookSubscription(
         string Name,

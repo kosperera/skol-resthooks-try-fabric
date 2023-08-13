@@ -16,8 +16,15 @@ internal static class SubscriptionEndpoint
         return routes;
     }
 
-    static async Task<Results<Ok<Subscription>, NotFound<object>>> ExecuteAsync([FromRoute] Guid id, IIntentsDb db, CancellationToken cancellationToken)
+    static async Task<Results<Ok<Subscription>, NotFound<object>>> ExecuteAsync(
+        [FromRoute] Guid id,
+        IIntentsDb db,
+        ILogger logger,
+        CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(db);
+        ArgumentNullException.ThrowIfNull(logger);
+
         Subscription? entity = await db.Subscriptions.WithId(id)
                                                      .SingleOrDefaultAsync(cancellationToken);
 
