@@ -10,6 +10,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Messaging", "Messaging", "{E0AA9770-5A0C-4796-BF92-DFECC82871D9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Subs", "Subs", "{A44BC09A-EE12-49C8-BD4B-86D23CF1EC73}"
+	ProjectSection(SolutionItems) = preProject
+		tests\e2e\Resthooks.Subs.http = tests\e2e\Resthooks.Subs.http
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{CFCA7345-22F0-4A97-A871-F1528BACC2E6}"
 EndProject
@@ -30,6 +33,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".dotfiles", ".dotfiles", "{BC95C399-B349-40EB-A11E-4879E88AF8B4}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		tests\e2e\.env = tests\e2e\.env
+		tests\e2e\.env.schema = tests\e2e\.env.schema
 		.gitignore = .gitignore
 		.runsettings = .runsettings
 		.spellcheckignore = .spellcheckignore
