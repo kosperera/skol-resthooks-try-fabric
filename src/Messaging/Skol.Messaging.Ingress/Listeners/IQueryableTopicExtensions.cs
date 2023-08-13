@@ -1,4 +1,3 @@
-using System.Linq;
 using Skol.Messaging.Ingress.Domain.Models;
 
 namespace Skol.Messaging.Ingress.Listeners;

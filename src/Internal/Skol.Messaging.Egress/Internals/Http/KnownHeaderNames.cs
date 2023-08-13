@@ -1,5 +1,3 @@
-using Microsoft.Net.Http.Headers;
-
 namespace Skol.Messaging.Egress.Internals.Http;
 
 public static class KnownHeaderNames

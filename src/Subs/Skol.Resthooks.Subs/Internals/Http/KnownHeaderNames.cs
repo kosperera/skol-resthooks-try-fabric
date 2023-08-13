@@ -1,5 +1,3 @@
-using Microsoft.Net.Http.Headers;
-
 namespace Skol.Resthooks.Subs.Internals.Http;
 
 internal static class KnownHeaderNames

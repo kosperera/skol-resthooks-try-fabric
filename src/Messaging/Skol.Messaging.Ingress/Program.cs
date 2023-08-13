@@ -1,9 +1,6 @@
+using System.Diagnostics;
 using Microsoft.ServiceFabric.Services.Runtime;
 using Skol.Messaging.Ingress;
-using System;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
 
 try
 {

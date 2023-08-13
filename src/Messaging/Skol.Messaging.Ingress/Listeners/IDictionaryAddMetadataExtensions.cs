@@ -1,5 +1,4 @@
 using Skol.Messaging.Ingress.Domain.ValueTypes;
-using System.Collections.Generic;
 
 namespace Skol.Messaging.Ingress.Listeners;
 

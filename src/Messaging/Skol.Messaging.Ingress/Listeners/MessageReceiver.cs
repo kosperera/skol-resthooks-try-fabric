@@ -1,10 +1,6 @@
-using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Skol.Messaging.Contracts;
 using Skol.Messaging.Ingress.Domain;
 using Skol.Messaging.Ingress.Domain.Models;

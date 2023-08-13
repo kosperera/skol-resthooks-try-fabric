@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Skol.Messaging.Ingress.Domain.Models;

@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
 using MassTransit;
-using Microsoft.Extensions.Logging;
 using Skol.Messaging.Contracts;
 using Skol.Messaging.Egress.Internals.Http;
 

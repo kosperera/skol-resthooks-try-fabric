@@ -1,5 +1,3 @@
-using System;
-
 namespace Skol.Resthooks.Subs.Domain.ChangeTracking;
 
 public abstract record StateChangeEntry

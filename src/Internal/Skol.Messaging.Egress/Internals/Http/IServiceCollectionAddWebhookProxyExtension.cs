@@ -1,4 +1,3 @@
-using System;
 using Skol.Messaging.Egress.Internals.Http;
 
 namespace Microsoft.Extensions.DependencyInjection;
