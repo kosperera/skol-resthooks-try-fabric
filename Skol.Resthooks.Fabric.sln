@@ -27,6 +27,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skol.Messaging.Ingress", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skol.Messaging.Egress", "src\Internal\Skol.Messaging.Egress\Skol.Messaging.Egress.csproj", "{BFB932E5-EED7-48E0-9253-582D8EAADDA0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".dotfiles", ".dotfiles", "{BC95C399-B349-40EB-A11E-4879E88AF8B4}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		.runsettings = .runsettings
+		.spellcheckignore = .spellcheckignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		global.json = global.json
+		nuget.config = nuget.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
