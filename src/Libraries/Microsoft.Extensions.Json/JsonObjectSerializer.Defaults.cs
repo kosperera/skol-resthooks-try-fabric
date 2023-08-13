@@ -4,7 +4,7 @@ namespace System.Text.Json;
 
 public sealed partial class JsonObjectSerializer
 {
-    internal static class Defaults
+    public static class Defaults
     {
         public static JsonSerializerOptions JsonWebScenario(JsonSerializerOptions? options = default)
         {
