@@ -1,14 +1,16 @@
 {
     "editor.formatOnPaste": true,
     "editor.guides.bracketPairs": "active",
-    "debug.internalConsoleOptions": "neverOpen",
     "scm.defaultViewMode": "tree",
+    "diffEditor.diffAlgorithm": "advanced",
+    "diffEditor.experimental.collapseUnchangedRegions": true,
+    "diffEditor.experimental.showMoves": true,
+    "diffEditor.experimental.useVersion2": true,
+    "diffEditor.renderSideBySide": false,
     "files.watcherExclude": {
-      "**/bin/**": true,
-      "**/obj/**": true
+        "**/bin/**": true,
+        "**/obj/**": true
     },
-    "files.associations": {
-      "**/ci/*.yml": "azure-pipelines"
-    },
+    // Show Request and Response both.
     "rest-client.previewOption": "exchange"
 }
