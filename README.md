@@ -1,144 +1,116 @@
-# Tryout RESThooks on Microsoft Service Fabric
+# RESThooks on Microsoft Service Fabric
 
-[<img align="right" alt=".NET C-sharp" width="128rem" src="https://raw.githubusercontent.com/github/explore/93d8a67084f94b2a444e510199a6e7622e5b09a3/topics/dotnet/dotnet.png" />][dotnet-quick-start]
+<img align="center" alt="RESThooks" width="100%" src="./docs/Architecture.jpg" />
 
-This template repo serves as a flavor of ready-to-go .NET and Azure development container.
+This is a flavor of [RESThooks][resthooks] implementation on Microsoft Service Fabric.
 
-> Originally, this dev container was created to tryout [.NET preview versions][dotnet-versions] without having to install them locally.
+> Originally, this was created to tryout a scalable publisher/subscriber design around a message broker like [RabbitMQ][rmq] or [Azure Service Bus][asb].
 
-[dotnet-quick-start]: https://learn.microsoft.com/en-us/dotnet/standard/get-started
-[dotnet-versions]: https://versionsof.net/core/
+[resthooks]: https://resthooks.io
+[rmq]: https://
+[asb]: https://
 
 ### What's included:
 
-Technically, this includes nothing but:
+In case you were wondering, this code is:
 
-- [.NET 7 Latest SDK][dotnet-versions-download] and Azure CLI with Bicep
-- Docker and Kubernetes with Helm Charts, and
-- Configured to build and run from VS Code
-
-[dotnet-versions-download]: https://dotnet.microsoft.com/en-us/download/dotnet
-
-## Requirements
-
-See [dev containers][devcontainers-use] to get started at the most basic level, and:
-
-- A GitHub account, and
-- [VS Code][vscode-download] with [recommended](./vscode/extensions.json) extensions
-
-[devcontainers-use]: https://containers.dev/supporting
-[vscode-download]: https://code.visualstudio.com/
+- Originally, written on a Mac with Windows 10 in Colombo, Sri Lanka.
+- Written in C# with Visual Studio 2022.
+- Built on .NET 7 with Service Fabric.
+- Pub/Sub as Fanout on RabbitMQ, thanks Docker.
+- Stored as JSON-data on Azure SQL, thanks to Docker.
+- Served with Mock Servers on Postman.
 
 
 
-## Quick Start
+## Build and Run from the Source
 
-If you are completely new to .NET and C#, the [.NET Learning Center][ms-docs-dotnet-learning-center] is a good source of information. Or follow this generic pattern:
-
-First you want a copy of this repo. It is marked as a `Template` so you will only have to [Use this template][use-this-template] and follow the instructions. Read more about this in the [GitHub's Template Repositories][github-template-repos] document.
-
-With [Dev Container CLI][devcontainers-cli]:
-
-Just run `devcontainer up devcontainers-try-dotnet-stuff/` in the repo. And that's it! 
-
-With VS Code:
-
-First. run `code devcontainers-try-dotnet-stuff/` in the repo to open in VS Code, and then it'll propmpt to `Reopen in Container`. Do that and we're all set!
+If you are completely new to .NET and Service Fabric, the [.NET Learning Center][ms-docs-dotnet-learning-center] is a good source of information. First, you want to ensure [Service Fabric Local Cluster][sf-local-devenv-setup] is up and running. Then you can build and run from the source, like you typically do for any other .NET project.
 
 [ms-docs-dotnet-learning-center]: https://dotnet.microsoft.com/en-us/learn
-[use-this-template]: /generate
-[github-template-repos]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
-[devcontainers-cli]: https://github.com/devcontainers/cli/#readme
+[sf-local-devenv-setup]: https://learn.microsoft.com/en-us/azure/service-fabric/service-fabric-get-started
+
+
+
+With SF Local Cluster Manager:
+
+- Reset Local Cluster.
+- Switch Cluster Mode to `1 Node`, and
+- Start Local Cluster.
+
+With Visual Studio:
+
+- Set Startup Project to `src/Host/Skol.Resthooks.Fabric.sfproj`.
+- Ensure Solution Platform is set to `x64`.
+- Press `F5` to launch the project.
+
+
+
+## Emulate Azure SQL and RabbitMQ
+
+First, you want to ensure Docker is up and running. Then you'll be able to spin up Azure SQL for data and RabbitMQ for messaging. Luckily, `.devcontainer/` directory contains the `compose-dev.yml` script.
+
+
+
+With Terminal:
+
+- Run `docker info` to verify Docker is up and running.
+
+- Run `docker compose -f .devcontainer/compose-dev.yml up -d`.
+
+
+
+## Create a SQL Database for Subscriptions
+
+Next, you want to create a database with the seed data.
+
+
+
+With Azure Data Studio:
+
+- Connect to SQL Server `localhost`.
+- Create a new database `Rh_IntentsDb`.
+
+- Open the Database Project in `db/Skol.Resthooks.SqlDb` directory, and
+- Publish.
+
+> #### TODO
+>
+> It's not recommended to hardcode things such as database *Connection String*. So it's advisable to move them to Service Fabric Configuration or Azure Key Vault or any other preferred location like they usually do.
 
 
 
 ## Things to Tryout
 
-First, you want to ensure the repo is `Reopened in Container`. Then you'll be able to work on .NET and Azure stuff like you would locally.
+Finally, you want to subscribe for a few topics, and then you can receive notifications. _Mocking with the Postman API_ is a good source to setup a few API endpoints with a mock server. Then you can tryout!
+
+
 
 With VS Code:
 
-1. In a Terminal, run `dotnet --info` to see required versions are installed.
-2. Run `az --version` to verify Azure CLI is installed.
+- Install [REST-client extension][vscode-rest-client-ext].
+- Create a `.env` file inside the `tests/e2e/` directory, and
+- Paste the `HOST` and the `HOST_API_KEY` of your Mock Server.
 
-### Create a minimal API
-
-Next, you would want to create a .NET project, say, a [Minimal API][dotnet-minimal-apis-tutorial] `test-project` that ships with .NET Template projects.
-
-[dotnet-minimal-apis-tutorial]: https://learn.microsoft.com/en-us/aspnet/core/tutorials/min-web-api?view=aspnetcore-6.0&tabs=visual-studio-code
-
-With VS Code:
-
-1. Run `dotnet new` to create a new web api with specific template.
-
-   ```bash
-   dotnet new webapi -o src\test-project \
-                     --use-minimal-apis \
-                     --language "C#"
-   ```
-
-2. Open the [launchSettings.json](./test-project/properties/launchSettings.json) file, then change the `test_project` profile to run on port `5000` for HTTP and `5001` for HTTPS.
-
-   ```json
-   "profiles": {
-     "test_project": {
-       // ...
-       "applicationUrl": "https://localhost:5001;http://localhost:5000",
-       // ...
-   }
-   ```
-
-### Build and run from source
-
-VS Code is integrated with Omnisharp Tools to run the web api on the dev container.
-
-With VS Code:
-
-1. Press `F5` to launch the web api project. Terminal shows the output from the Debug Console.
-2. When the web api executes, visit [localhost:5001/swagger](https://localhost:5001/swagger) on your favorite browser.
-3. Press `Ctrl`+`C` to stop and disconnect the debugger.
+[vscode-rest-client-ext]: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
 
 
 
-## Known issues
+### Topics
 
-- https://github.com/devcontainers/features/issues/440
-- https://github.com/azure/azure-functions-core-tools/issues/3112
-- https://github.com/omnisharp/omnisharp-vscode/issues/4348
+- `GET https://localhost:9059/v1/topics` to list all the available topics to subscribe.
 
+### Subscriptions
 
+- `GET https://localhost:9059/v1/subscriptions` to list all the subscriptions.
+- `POST https://localhost:9059/v1/subscription` to subscribe for one or more topics.
+- `GET https://localhost:9059/v1/subscription/id/{guid}` to see the details of a subscription.
+- `PATCH https://localhost:9059/v1/subscription/id/{guid}/activate` to activate the subscription.
+- `DELETE https://localhost:9059/v1/subscription/id/{guid}` to unsubscribe.
 
-## Useful Resources
+### Messaging
 
-- [Dev Containers specification][devcontainers-json-spec] is a good source to learn more about `.devcontainer.json` configuration options and its usage.
-- [See .NET CLI page][ms-docs-dotnet-cli] to learn the full-blown `dotnet` options.
-- [See Azure CLI page][ms-docs-azure-cli] to learn what can be done with `az` and `az pipelines`.
-- [See Azure DevOps CLI page][ms-docs-azure-devops-cli] to learn what can be done with `az devops` .
-- [See .NET Docker Images][dotnet-docker-images] for alternative versions as you wish.
-
-[devcontainers-json-spec]: https://containers.dev/implementors/json_reference/
-[ms-docs-dotnet-cli]: https://docs.microsoft.com/en-us/dotnet/core/tools/
-[ms-docs-azure-cli]: https://learn.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest
-[ms-docs-azure-devops-cli]: https://learn.microsoft.com/en-us/azure/devops/cli/?view=azure-devops
-[dotnet-docker-images]: https://hub.docker.com/_/microsoft-dotnet-sdk/
-
-
-
-## Feedback
-
-If you have any technical problems with dev containers, you are better off asking [Dev Containers Support][devcontainers-support] directly, since you'll end up getting a much faster response back that way.
-
-[devcontainers-support]: https://github.com/devcontainers/community/discussions/3
-
-
-
-## Contributing
-
-The official repo to contribute would be [@devcontainers][devcontainers-repo].
-
-Have a suggestion or a bug fix? Just open a pull request or an issue. Include clear and simple instructions possible.
-
-[devcontainers-repo]: https://github.com/devcontainers
+- `POST https://localhost:8172/v1/messaging/publish` to send messages for subscribers.
 
 
 
